@@ -26,5 +26,5 @@ La meta es recolectar 4 tesoros sin encontrar todos los chacales o repetir una c
 
 
 **Autores**
-Jorge Gaibor- Jegaibor@espol.edu.ec
-Jordan Salinas-Jorasali@espol.edu.ec
+Jorge Gaibor  -Jegaibor@espol.edu.ec
+Jordan Salinas -Jorasali@espol.edu.ec
