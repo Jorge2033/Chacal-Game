@@ -8,8 +8,16 @@ La meta es recolectar 4 tesoros sin encontrar todos los chacales o repetir una c
 **Funcionalidades**
 
 **Tablero Aleatorio:** Colocación aleatoria de chacales y tesoros.
+
+
 **Interacción:** Permite al usuario seleccionar casillas para descubrir su contenido.
+
+
+
 **Estado del Juego:** Muestra el progreso, dinero, tesoros y chacales descubiertos.
+
+
+
 **Estrategia:** El jugador decide si seguir jugando para ganar más dinero o retirarse con lo acumulado.
 
 
