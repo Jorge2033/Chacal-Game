@@ -1,232 +1,232 @@
-.text   
+.text
     .globl  main
-    .globl  mostrar_tablero
-    .globl  crear_tablero
-    .globl  numero_aleatorio
-    .globl  visualizar_tablero
-    .globl  mostrar_progreso
-    .globl  esperar_entrada
+    .globl  mostrarJuego
+    .globl  crearTablero
+    .globl  generarAleatorio
+    .globl  visualizarTablero
+    .globl  mostrarProgreso
+    .globl  esperarEntrada
 
-main:                       
+main:
     li      $v0,                4
-    la      $a0,                titulo
-    syscall 
-    li      $v0,                4                                                                                   
-    la      $a0,                mensaje                                                                             
-    syscall                                                                                                         
-    jal     esperar_entrada                                                                                          
-
-    li      $v0,                4                                                                                   
-    la      $a0,                nueva_linea                                                                             
-    syscall                                                                                                         
+    la      $a0,                tituloJuego
+    syscall
+    li      $v0,                4
+    la      $a0,                mensajeBienvenida
+    syscall
+    jal     esperarEntrada
 
     li      $v0,                4
-    la      $a0,                mensaje_creacion_tablero
-    syscall 
-    jal     crear_tablero
+    la      $a0,                nuevaLinea
+    syscall
 
-    lw      $s1,                tesorosDescubiertos                                                                 
-    lw      $s2,                estadoJuego                                                                           
-    lw      $s3,                todosTesorosEncontrados                                                                 
-    lw      $s4,                todosChacalesEncontrados                                                                   
+    li      $v0,                4
+    la      $a0,                mensajeCreacionTablero
+    syscall
+    jal     crearTablero
+
+    lw      $s1,                tesorosDescubiertos
+    lw      $s2,                estadoJuego
+    lw      $s3,                todosTesorosEncontrados
+    lw      $s4,                todosChacalesEncontrados
     lw      $s5,                dineroGanado
     lw      $s6,                chacalesDescubiertos
 
-bucle_juego:                 
+bucleJuego:
     li      $v0,                4
-    la      $a0,                mensaje_tablero
-    syscall 
-    jal     visualizar_tablero
-    jal     mostrar_progreso
+    la      $a0,                mensajeTablero
+    syscall
+    jal     visualizarTablero
+    jal     mostrarProgreso
     li      $v0,                4
     la      $a0,                mensajeAleatorio
-    syscall 
-    jal     numero_aleatorio
-    li      $v0,                1                                                                                   
-    syscall 
+    syscall
+    jal     generarAleatorio
+    li      $v0,                1
+    syscall
     move    $t0,                $a0
 
-    jal     actualizar_tablero                                                                                     
+    jal     actualizarTablero
 
     li      $v0,                4
-    la      $a0,                nueva_linea
-    syscall 
-    jal     visualizar_tablero
+    la      $a0,                nuevaLinea
+    syscall
+    jal     visualizarTablero
 
-    li      $v0,                10                                                                                  
-    syscall 
+    li      $v0,                10
+    syscall
 
-encontro_chacal:             
+encontroChacal:
     li      $v0,                4
-    la      $a0,                mensaje_chacal
-    syscall 
-encontro_tesoro:             
+    la      $a0,                mensajeChacal
+    syscall
+encontroTesoro:
     li      $v0,                4
-    la      $a0,                mensaje_tesoro
-    syscall 
-validar_descubrimiento:            
-    la      $t1,                tablero                                                                             
-    sll     $t3,                $t3,                        2                                                      
-    add     $t4,                $t3,                        $t1                                                    
+    la      $a0,                mensajeTesoro
+    syscall
+validarDescubrimiento:
+    la      $t1,                tablero
+    sll     $t3,                $t3,                2
+    add     $t4,                $t3,                $t1
 
-    jr      $ra                                                                                                     
-actualizar_tablero:         
-    la      $t1,                descubiertas                                                                        
-    sll     $t0,                $t0,                        2                                                      
-    add     $t0,                $t0,                        $t1                                                    
-    lw      $t2,                0($t0)                                                                              
+    jr      $ra
+actualizarTablero:
+    la      $t1,                descubiertas
+    sll     $t0,                $t0,                2
+    add     $t0,                $t0,                $t1
+    lw      $t2,                0($t0)
 
-    bnez    $t2,                ya_descubierto                                                                 
+    bnez    $t2,                yaDescubierto
 
-    li      $t2,                1                                                                                   
-    sw      $t2,                0($t0)                                                                              
+    li      $t2,                1
+    sw      $t2,                0($t0)
 
-    jr      $ra                                                                                                     
+    jr      $ra
 
-ya_descubierto:        
+yaDescubierto:
     li      $v0,                4
-    la      $a0,                mensaje_casilla_descubierta
-    syscall 
+    la      $a0,                mensajeCasillaDescubierta
+    syscall
 
-    jr      $ra                                                                                                     
-esperar_entrada:             
-    la      $a0,                mensaje_continuar
-    syscall 
+    jr      $ra
+esperarEntrada:
+    la      $a0,                mensajeContinuar
+    syscall
     li      $v0,                8
     la      $a0,                espacio
     li      $a1,                2
-    syscall 
+    syscall
     li      $v0,                4
-    la      $a0,                nueva_linea
-    syscall 
-    jr      $ra                                                                                                     
-mostrar_progreso:              
+    la      $a0,                nuevaLinea
+    syscall
+    jr      $ra
+mostrarProgreso:
     li      $v0,                4
-    la      $a0,                mensaje_dinero
-    syscall 
+    la      $a0,                mensajeDinero
+    syscall
     li      $v0,                1
     move    $a0,                $s5
-    syscall 
+    syscall
     li      $v0,                4
-    la      $a0,                nueva_linea
-    syscall 
+    la      $a0,                nuevaLinea
+    syscall
     li      $v0,                4
-    la      $a0,                mensaje_tesoros_encontrados
-    syscall 
+    la      $a0,                mensajeTesorosEncontrados
+    syscall
     li      $v0,                1
     move    $a0,                $s1
-    syscall 
+    syscall
     li      $v0,                4
-    la      $a0,                nueva_linea
-    syscall 
+    la      $a0,                nuevaLinea
+    syscall
     li      $v0,                4
-    la      $a0,                mensaje_chacales_encontrados
-    syscall 
+    la      $a0,                mensajeChacalesEncontrados
+    syscall
     li      $v0,                1
     move    $a0,                $s6
-    syscall 
+    syscall
     li      $v0,                4
-    la      $a0,                nueva_linea
-    syscall 
+    la      $a0,                nuevaLinea
+    syscall
     jr      $ra
-numero_aleatorio:           
+numeroAleatorio:
     li      $a1,                12
     li      $v0,                42
-    syscall 
+    syscall
     jr      $ra
-crear_tablero:            
-    li      $t0,                4                                                                                   
-    addi    $sp,                $sp,                        -4                                                      
-    sw      $ra,                0($sp)                                                                              
+crearTablero:
+    li      $t0,                4
+    addi    $sp,                $sp,                -4
+    sw      $ra,                0($sp)
 
-loop:                       
-    beq     $t0,                $zero,                      exitLoop
-    jal     numero_aleatorio                                                                                       
+loopCreacionTablero:
+    beq     $t0,                $zero,              exitLoopCreacionTablero
+    jal     numeroAleatorio
     move    $t1,                $a0
 
-    sll     $t1,                $t1,                        2
+    sll     $t1,                $t1,                2
     la      $t3,                tablero
-    add     $t1,                $t1,                        $t3
+    add     $t1,                $t1,                $t3
 
     lw      $t2,                0($t1)
 
-    beq     $t2,                $zero,                      continue
+    beq     $t2,                $zero,              continuarCreacionTablero
     sw      $zero,              0($t1)
-    addi    $t0,                $t0,                        -1
+    addi    $t0,                $t0,                -1
 
-continue:                   
-    j       loop
+continuarCreacionTablero:
+    j       loopCreacionTablero
 
-exitLoop:                   
-
+exitLoopCreacionTablero:
     lw      $ra,                0($sp)
-    addi    $sp,                $sp,                        4
+    addi    $sp,                $sp,                4
 
     jr      $ra
 
-mostrar_tablero:                
-    la      $t0,                tablero                                                                             
-    li      $t2,                12                                                                                  
+mostrarJuego:
+    la      $t0,                tablero
+    li      $t2,                12
 
-loop_mostrar_tablero:                 
-    beqz    $t2,                fin_mostrar_tablero                                                                         
-    lw      $t5,                0($t0)                                                                              
-    beq     $t5,                0,                          imprimir0                                                  
-    beq     $t5,                1,                          imprimir1                                                  
+loopMostrarTablero:
+    beqz    $t2,                finMostrarTablero
+    lw      $t5,                0($t0)
+    beq     $t5,                0,                  imprimir0
+    beq     $t5,                1,                  imprimir1
 
-imprimir0:                     
-    li      $v0,                4                                                                                   
-    la      $a0,                mensaje0                                                                            
-    syscall 
-    j       siguiente_elemento
+imprimir0:
+    li      $v0,                4
+    la      $a0,                mensaje0
+    syscall
+    j       siguienteElemento
 
-imprimir1:                     
-    li      $v0,                4                                                                                   
-    la      $a0,                mensaje1                                                                            
-    syscall 
-    j       siguiente_elemento
+imprimir1:
+    li      $v0,                4
+    la      $a0,                mensaje1
+    syscall
+    j       siguienteElemento
 
-siguiente_elemento:               
-    addi    $t0,                $t0,                        4                                                      
-    addi    $t2,                $t2,                        -1                                                     
-    j       loop_mostrar_tablero                                                                                          
+siguienteElemento:
+    addi    $t0,                $t0,                4
+    addi    $t2,                $t2,                -1
+    j       loopMostrarTablero
 
-fin_mostrar_tablero:                  
-    li      $v0,                4                                                                                   
-    la      $a0,                nueva_linea
-    syscall 
+finMostrarTablero:
+    li      $v0,                4
+    la      $a0,                nuevaLinea
+    syscall
 
     jr      $ra
-visualizar_tablero:              
-    la      $t0,                descubiertas                                                                        
-    la      $t6,                tablero                                                                             
-    li      $t2,                12                                                                                  
 
-loop_visualizar_tablero:                
-    beqz    $t2,                fin_visualizar_tablero                                                                         
-    lw      $t5,                0($t0)                                                                              
-    lw      $t7,                0($t6)                                                                              
+visualizarTablero:
+    la      $t0,                descubiertas
+    la      $t6,                tablero
+    li      $t2,                12
 
-    beq     $t5,                0,                          imprimir_casilla_oculta                                      
-    la      $a0,                mensaje_x
-    syscall 
-    j       siguiente_casilla
+loopVisualizarTablero:
+    beqz    $t2,                finVisualizarTablero
+    lw      $t5,                0($t0)
+    lw      $t7,                0($t6)
 
-imprimir_casilla_oculta:       
+    beq     $t5,                0,                  imprimirCasillaOculta
+    la      $a0,                mensajeX
+    syscall
+    j       siguienteCasilla
+
+imprimirCasillaOculta:
     li      $v0,                4
-    la      $a0,                mensaje_casilla_oculta
-    syscall 
-    j       siguiente_casilla
+    la      $a0,                mensajeCasillaOculta
+    syscall
+    j       siguienteCasilla
 
-siguiente_casilla:            
-    addi    $t0,                $t0,                        4
-    addi    $t6,                $t6,                        4
-    addi    $t2,                $t2,                        -1
-    j       loop_visualizar_tablero
+siguienteCasilla:
+    addi    $t0,                $t0,                4
+    addi    $t6,                $t6,                4
+    addi    $t2,                $t2,                -1
+    j       loopVisualizarTablero
 
-fin_visualizar_tablero:       
+finVisualizarTablero:
     li      $v0,                4
-    la      $a0,                nueva_linea
-    syscall 
+    la      $a0,                nuevaLinea
+    syscall
 
     jr      $ra
